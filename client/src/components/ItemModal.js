@@ -9,7 +9,6 @@ import {
     Label,
     Input
 } from 'reactstrap';
-import {v4 as uuid} from 'uuid';
 import {connect} from 'react-redux';
 import {addItem} from '../actions/itemAction';
 
@@ -32,7 +31,6 @@ class ItemModal extends Component{
     onSubmit=(e)=>{
         e.preventDefault();
         const newItem={
-            id:uuid(),
             name:this.state.name
         }
         this.props.addItem(newItem);
