@@ -10,7 +10,9 @@ class ShoppingList extends Component{
         this.props.getItems();
     }
     onDeleteClick=id=>{
+       // console.log("in delete function");
         this.props.deleteItem(id);
+       // console.log("delte called");
     }
     render(){
         const {items}=this.props.item;
