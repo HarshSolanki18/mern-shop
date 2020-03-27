@@ -1,10 +1,11 @@
 const express=require("express"),
      bodyParser=require("body-parser"),
      mongoose=require("mongoose"),
-     path=require("path");
+     path=require("path"),
+     config=require("config");
 
 const app=express();
-const items=require('./routes/api/items');
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
@@ -15,14 +16,19 @@ app.use((req, res, next) => {
 //body parser middleware
 app.use(bodyParser.json());
 //DB config
-const db=require('./config/keys').mongoURI;
+const db=config.get('mongoURI');
 //connect to mongodb  mongodb://localhost:27017/itemdb
-mongoose.connect(db).then(()=>{
+mongoose.connect(db,{
+    useNewUrlParser:true,
+    useCreateIndex:true
+}).then(()=>{
     console.log("Database Connected ...")}).catch((err)=>{
         console.log(err);
     });
 
-app.use('/api/items',items);    
+app.use('/api/items',require('./routes/api/items'));
+app.use('/api/users',require('./routes/api/users'));
+app.use('/api/auth',require('./routes/api/auth'));    
 
 //serve static assets if in production
 if(process.env.NODE_ENV=='production'){
